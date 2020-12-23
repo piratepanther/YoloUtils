@@ -7,7 +7,7 @@ lines =4000 # lines in train_log_loss.txt
 result = pd.read_csv('train_log_loss.txt', skiprows=[x for x in range(lines) if ((x%10!=9) |(x<1000))] ,error_bad_lines=False, names=['loss', 'avg', 'rate', 'seconds', 'images'])
 result.head()
  
-result['loss']=result['loss'].str.split(' ').str.get(1)
+result['loss']=result['loss'].str.split(':').str.get(1)
 result['avg']=result['avg'].str.split(' ').str.get(1)
 result['rate']=result['rate'].str.split(' ').str.get(1)
 result['seconds']=result['seconds'].str.split(' ').str.get(1)
