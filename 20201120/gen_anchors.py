@@ -14,8 +14,8 @@ import shutil
 import random 
 import math
 
-width_in_cfg_file = 1280
-height_in_cfg_file = 720
+width_in_cfg_file = 608
+height_in_cfg_file = 608
 
 def IOU(x,centroids):
     similarities = []
