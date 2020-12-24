@@ -1,26 +1,56 @@
 import xml.etree.ElementTree as ET
 import os
-import cPickle
+import pickle
 import numpy as np
 
-def parse_rec(filename):
-    """ Parse a PASCAL VOC xml file """
-    tree = ET.parse(filename)
-    objects = []
-    for obj in tree.findall('object'):
-        obj_struct = {}
-        obj_struct['name'] = obj.find('name').text
-        obj_struct['pose'] = obj.find('pose').text
-        obj_struct['truncated'] = int(obj.find('truncated').text)
-        obj_struct['difficult'] = int(obj.find('difficult').text)
-        bbox = obj.find('bndbox')
-        obj_struct['bbox'] = [int(bbox.find('xmin').text),
-                              int(bbox.find('ymin').text),
-                              int(bbox.find('xmax').text),
-                              int(bbox.find('ymax').text)]
-        objects.append(obj_struct)
+HRdict = {0: 'tieqiu', 1: 'dianchui', 2: 'tiechan'}
 
-    return objects
+def parse_rec(filename):
+    """ Parse a PASCAL VOC TXT file """
+
+    with open(filename,"r") as f:
+        objects = []
+        LinesCont = f.readlines()
+        for obj in LinesCont:
+            obj_struct = {}
+            obj_struct['name']=HRdict[int(obj.replace('\n','').split(' ')[0])]
+            obj_struct['pose'] = 'Unspecified'
+            obj_struct['truncated'] = 0
+            obj_struct['difficult'] = 0
+            # float(LinesCont[0].replace('\n', '').split(' ')[1])
+            # float(obj.replace('\n', '').split(' ')[1])
+            xz = float(obj.replace('\n', '').split(' ')[1])
+            yz = float(obj.replace('\n', '').split(' ')[2])
+            xb = float(obj.replace('\n', '').split(' ')[3])
+            yb = float(obj.replace('\n', '').split(' ')[4])
+
+            obj_struct['bbox']=[round((xz - xb / 2) * 608),
+                                round((yz - yb / 2) * 608),
+                                round((xz + xb / 2) * 608),
+                                round((yz + yb / 2) * 608)]
+
+            objects.append(obj_struct)
+        return objects
+
+
+
+    # tree = ET.parse(filename)
+    # objects = []
+    # for obj in tree.findall('object'):
+    #     obj_struct = {}
+    #     obj_struct['name'] = obj.find('name').text
+    #     obj_struct['pose'] = obj.find('pose').text
+    #     obj_struct['truncated'] = int(obj.find('truncated').text)
+    #     obj_struct['difficult'] = int(obj.find('difficult').text)
+    #
+    #     bbox = obj.find('bndbox')
+    #     obj_struct['bbox'] = [int(bbox.find('xmin').text),
+    #                           int(bbox.find('ymin').text),
+    #                           int(bbox.find('xmax').text),
+    #                           int(bbox.find('ymax').text)]
+    #     objects.append(obj_struct)
+    #
+    # return objects
 
 def voc_ap(rec, prec, use_07_metric=False):
     """ ap = voc_ap(rec, prec, [use_07_metric])
@@ -100,16 +130,16 @@ def voc_eval(detpath,
         for i, imagename in enumerate(imagenames):
             recs[imagename] = parse_rec(annopath.format(imagename))
             if i % 100 == 0:
-                print 'Reading annotation for {:d}/{:d}'.format(
-                    i + 1, len(imagenames))
+                print('Reading annotation for {:d}/{:d}'.format(
+                    i + 1, len(imagenames)))
         # save
-        print 'Saving cached annotations to {:s}'.format(cachefile)
-        with open(cachefile, 'w') as f:
-            cPickle.dump(recs, f)
+        print('Saving cached annotations to {:s}'.format(cachefile))
+        with open(cachefile, 'wb') as f:
+            pickle.dump(recs, f)
     else:
         # load
-        with open(cachefile, 'r') as f:
-            recs = cPickle.load(f)
+        with open(cachefile, 'rb') as f:
+            recs = pickle.load(f)
 
     # extract gt objects for this class
     class_recs = {}

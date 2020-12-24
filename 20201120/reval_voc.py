@@ -13,7 +13,7 @@
 
 import os, sys, argparse
 import numpy as np
-import cPickle
+import pickle
 
 from voc_eval import voc_eval
 
@@ -24,7 +24,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Re-evaluate results')
     parser.add_argument('output_dir', nargs=1, help='results directory',
                         type=str)
-    parser.add_argument('--voc_dir', dest='voc_dir', default='data/VOCdevkit', type=str)
+    parser.add_argument('--voc_dir', dest='voc_dir', default='VOCdevkit', type=str)
     parser.add_argument('--year', dest='year', default='2007', type=str)
     parser.add_argument('--image_set', dest='image_set', default='test', type=str)
 
@@ -46,8 +46,8 @@ def do_python_eval(devkit_path, year, image_set, classes, output_dir = 'results'
     annopath = os.path.join(
         devkit_path,
         'VOC' + year,
-        'Annotations',
-        '{:s}.xml')
+        'labels',
+        '{:s}.txt')
     imagesetfile = os.path.join(
         devkit_path,
         'VOC' + year,
@@ -59,7 +59,7 @@ def do_python_eval(devkit_path, year, image_set, classes, output_dir = 'results'
     # The PASCAL VOC metric changed in 2010
     # use_07_metric = True if int(year) < 2010 else False
     use_07_metric = False
-    print 'VOC07 metric? ' + ('Yes' if use_07_metric else 'No')
+    print('VOC07 metric? ' + ('Yes' if use_07_metric else 'No'))
 
     if not os.path.isdir(output_dir):
         os.mkdir(output_dir)
@@ -72,8 +72,8 @@ def do_python_eval(devkit_path, year, image_set, classes, output_dir = 'results'
             use_07_metric=use_07_metric)
         aps += [ap]
         print('AP for {} = {:.4f}'.format(cls, ap))
-        with open(os.path.join(output_dir, cls + '_pr.pkl'), 'w') as f:
-            cPickle.dump({'rec': rec, 'prec': prec, 'ap': ap}, f)
+        with open(os.path.join(output_dir, cls + '_pr.pkl'), 'wb') as f:
+            pickle.dump({'rec': rec, 'prec': prec, 'ap': ap}, f)
     print('Mean AP = {:.4f}'.format(np.mean(aps)))
     print('~~~~~~~~')
     print('Results:')
@@ -99,5 +99,5 @@ if __name__ == '__main__':
 
     classes = [t.strip('\n') for t in lines]
 
-    print 'Evaluating detections'
+    print('Evaluating detections')
     do_python_eval(args.voc_dir, args.year, args.image_set, classes, output_dir)
