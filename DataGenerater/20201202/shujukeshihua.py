@@ -8,6 +8,8 @@ from matplotlib import cm
 import numpy as np
 import matplotlib.pyplot as plt
 
+plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
 
 fig = plt.figure()
 #创建一个三维坐标轴
@@ -17,7 +19,7 @@ ax = plt.axes(projection='3d')
 
 
 # in_path = 'J:/HRImage/20201214imageprocess/done/1.jpg'
-in_path = 'J:/HRImage/20201214imageprocess/todo/tiechan/3-000001.jpg'
+in_path = 'J:/HRImage/20201214imageprocess/todo/tiechan/3-000005.jpg'
 
 img = cv2.imread(in_path,0)
 
@@ -38,9 +40,9 @@ ax.contourf(X, Y, Z, zdir='z',offset=-0.8, cmap='rainbow')
 plt.contourf(X, Y, Z, 80, alpah = 0.75, cmap='rainbow')
 
 
-ax.set_xlabel('x')
-ax.set_ylabel('y')
-ax.set_zlabel('z')
+ax.set_xlabel('振动范围')
+ax.set_ylabel('持续时间')
+ax.set_zlabel('振动强度')
 
 # ax.set_title('surface')
 plt.colorbar()
