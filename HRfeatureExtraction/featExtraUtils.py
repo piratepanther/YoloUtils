@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from HRfeatureExtraction import featExtraDTO
 
 #计算灰度图像区域内能量
 def calcuSignalEnergyfromMat( gray_img ):
@@ -48,10 +49,18 @@ def calcuVibrationDegreefromMat(gray_img,signalStrengthThreshold=100,hightThre=5
 
    [x2, y2, w2, h2]=cv2.boundingRect(eligibleContours[len(eligibleContours)-1])
 
-   gray_img_Before = gray_img[y1:y1+h1,x1:x1+w1]
-   gray_img_After = gray_img[y2:y2 + h2, x2:x2 + w2]
+   gray_img_Before = gray_img[y1: y1 + h1, x1: x1 + w1]
+   gray_img_After = gray_img[y2: y2 + h2, x2: x2 + w2]
 
    return (calcuSignalMeanfromMat(gray_img_Before)-calcuSignalMeanfromMat(gray_img_After))/255
 
 
+def calcuAlertLevelNum(signalEnergy,signalMax ,signalMean, signalVar, signalProportion, vibrationDegree):
+   alertLevelNum = signalEnergy*featExtraDTO.alertLevelParameter.signalEnergyPara.value + \
+                   signalMax*featExtraDTO.alertLevelParameter.signalMaxPara.value+ \
+                   signalMean*featExtraDTO.alertLevelParameter.signalMeanPara.value+ \
+                   signalVar*featExtraDTO.alertLevelParameter.signalVarPara.value+ \
+                   signalProportion*featExtraDTO.alertLevelParameter.signalProportionPara.value+ \
+                   vibrationDegree*featExtraDTO.alertLevelParameter.vibrationDegreePara.value
 
+   return alertLevelNum

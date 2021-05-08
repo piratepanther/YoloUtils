@@ -1,5 +1,6 @@
 import cv2
 from HRfeatureExtraction import featExtraUtils
+from HRfeatureExtraction import featExtraDTO
 import numpy as np
 #@paramter
 in_path = '123.png'
@@ -17,15 +18,29 @@ gray_img = cv2.cvtColor(bgr_img, cv2.COLOR_BGR2GRAY)
 # print (type(gray_img))
 #grayImg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
+
 signalEnergy=featExtraUtils.calcuSignalEnergyfromMat(gray_img)
 signalMax=featExtraUtils.calcuSignalMaxfromMat(gray_img)
 signalMean=featExtraUtils.calcuSignalMeanfromMat(gray_img)
 signalVar=featExtraUtils.calcuSignalVarfromMat(gray_img)
 signalProportion=featExtraUtils.calcuSignalProportionfromMat(gray_img)
 vibrationDegree=featExtraUtils.calcuVibrationDegreefromMat(gray_img,signalStrengthThreshold,hightThre,widththre,areathre)
+alertLevelNum=featExtraUtils.calcuAlertLevelNum(signalEnergy,signalMax ,signalMean, signalVar, signalProportion, vibrationDegree)
+
+
+featExtra = featExtraDTO.feaExtra(signalEnergy,signalMax ,signalMean, signalVar, signalProportion, vibrationDegree,alertLevelNum)
+
+
 
 print('--------')
-print(signalEnergy,signalMax,signalMean,signalVar,str(signalProportion)+'%',str(vibrationDegree)+'%')
+featExtra.displayfeaExtra()
+# print("signalEnergy : ", signalEnergy,
+#       "signalMax : ", signalMax,
+#       "signalMean : ", signalMean,
+#       "signalVar : ", signalVar,
+#       "signalProportion : ", str(signalEnergy)+'%',
+#       "signalEnergy : ", str(signalEnergy)+'%'
+#       )
 
 cv2.imshow('image',bgr_img)
 cv2.waitKey(0)
