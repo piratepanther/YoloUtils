@@ -31,7 +31,7 @@ class feaExtra:
     alertLevelNum = ''
 
 
-    # alertLevel=''
+    alertLevel=''
 
 
     def __init__(self, signalEnergy,signalMax ,signalMean, signalVar, signalProportion, vibrationDegree,alertLevelNum):
@@ -42,8 +42,9 @@ class feaExtra:
         self.signalProportion = signalProportion
         self.vibrationDegree = vibrationDegree
         self.alertLevelNum = alertLevelNum
+        self.alertLevel = self.getalertLevelCol(self.alertLevelNum)
 
-    def getalertLevelCol(alertLevelNum):
+    def getalertLevelCol(self,alertLevelNum):
         if alertLevelNum<=alertLevelEmu.LEVEL1.value:
             alertLevel= alertLevelCol.BLUE.value
 
@@ -62,5 +63,5 @@ class feaExtra:
               "signalProportion : ", str(self.signalEnergy)+'%',
               "signalEnergy : ", str(self.signalEnergy)+'%',
               "alertLevelNum : ", self.alertLevelNum,
-              "alertLevel : ", self.getalertLevelCol(self.alertLevelNum)
+              "alertLevel : ", self.alertLevel
               )

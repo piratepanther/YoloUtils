@@ -26,7 +26,7 @@ signalVar=featExtraUtils.calcuSignalVarfromMat(gray_img)
 signalProportion=featExtraUtils.calcuSignalProportionfromMat(gray_img)
 vibrationDegree=featExtraUtils.calcuVibrationDegreefromMat(gray_img,signalStrengthThreshold,hightThre,widththre,areathre)
 alertLevelNum=featExtraUtils.calcuAlertLevelNum(signalEnergy,signalMax ,signalMean, signalVar, signalProportion, vibrationDegree)
-
+# print(alertLevelNum)
 
 featExtra = featExtraDTO.feaExtra(signalEnergy,signalMax ,signalMean, signalVar, signalProportion, vibrationDegree,alertLevelNum)
 
