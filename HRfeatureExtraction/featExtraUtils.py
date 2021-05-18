@@ -44,15 +44,18 @@ def calcuVibrationDegreefromMat(gray_img,signalStrengthThreshold=100,hightThre=5
          eligibleContours.append(contour)
       else:
          continue
-   # if eligibleContours:
-   [x1, y1, w1, h1]=cv2.boundingRect(eligibleContours[0])
+   if len(eligibleContours)>=2:
+      [x1, y1, w1, h1]=cv2.boundingRect(eligibleContours[0])
 
-   [x2, y2, w2, h2]=cv2.boundingRect(eligibleContours[len(eligibleContours)-1])
+      [x2, y2, w2, h2]=cv2.boundingRect(eligibleContours[len(eligibleContours)-1])
 
-   gray_img_Before = gray_img[y1: y1 + h1, x1: x1 + w1]
-   gray_img_After = gray_img[y2: y2 + h2, x2: x2 + w2]
+      gray_img_Before = gray_img[y1: y1 + h1, x1: x1 + w1]
+      gray_img_After = gray_img[y2: y2 + h2, x2: x2 + w2]
 
-   return (calcuSignalMeanfromMat(gray_img_Before)-calcuSignalMeanfromMat(gray_img_After))/255
+      return (calcuSignalMeanfromMat(gray_img_Before)-calcuSignalMeanfromMat(gray_img_After))/255
+   else:
+      return 1
+
 
 
 def calcuAlertLevelNum(signalEnergy,signalMax ,signalMean, signalVar, signalProportion, vibrationDegree):

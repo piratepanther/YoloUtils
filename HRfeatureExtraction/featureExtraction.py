@@ -16,6 +16,7 @@ gray_img = cv2.cvtColor(bgr_img, cv2.COLOR_BGR2GRAY)
 # img = cv2.imread(in_path,cv2.IMREAD_GRAYSCALE)
 # print (type(bgr_img))
 # print (type(gray_img))
+
 #grayImg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 
