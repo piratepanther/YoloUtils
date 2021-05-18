@@ -58,8 +58,8 @@ class feaExtra:
               "signalMax : ", self.signalMax,
               "signalMean : ", self.signalMean,
               "signalVar : ", self.signalVar,
-              "signalProportion : ", str(self.signalEnergy)+'%',
-              "signalEnergy : ", str(self.signalEnergy)+'%',
+              "signalProportion : ", str(self.signalProportion)+'%',
+              "vibrationDegree : ", str(-self.vibrationDegree)+'%',
               "alertLevelNum : ", self.alertLevelNum,
               "alertLevel : ", self.alertLevel
               )
